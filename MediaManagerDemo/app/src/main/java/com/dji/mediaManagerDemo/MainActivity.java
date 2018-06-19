@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,11 +62,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private View lastClickView;
     private TextView mPushTv;
 
+    private String status;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initUI();
+    }
+
+    private void downloadAllFiles() {
+        Log.d(TAG, "Status é " + status);
+        Log.d(TAG, "Tamanho lista é " + mediaFileList.size());
+        if(status == "Set cameraMode success"){
+            for(int i = 0; i< mediaFileList.size(); i++){
+                downloadFileByIndex(i);
+            }
+        }
     }
 
     @Override
@@ -253,6 +266,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         @Override
                         public void onResult(DJIError error) {
                             if (error == null) {
+                                status = "Set cameraMode success";
                                 DJILog.e(TAG, "Set cameraMode success");
                                 showProgressDialog();
                                 getFileList();
@@ -316,6 +330,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                                     if (error == null) {
                                         getThumbnails();
                                         getPreviews();
+                                        downloadAllFiles();
                                     }
                                 }
                             });
@@ -531,6 +546,42 @@ public class MainActivity extends Activity implements View.OnClickListener {
             return;
         }
 
+        //Checar se arquivo já existe, e se tem o mesmo tamanho ou não, caso tenha dado erro no download
+        if(checkFileExistByIndex(index)){
+            return;
+        }
+        Log.d(TAG, "passou do segundo return");
+/*
+        Boolean equal = false;
+        //try {
+            String fileName = mediaFileList.get(index).getFileName();
+            final String filePath = destDir + "/" + fileName;
+            Log.d(TAG, "filePath é " + filePath);
+            File destCheck = new File(filePath);
+            long mediaSize = mediaFileList.get(index).getFileSize();
+
+            if(destCheck.exists()){
+                long localFileSize = destCheck.length();
+                if(localFileSize != mediaSize){
+                    Log.d(TAG, "downloadFileByIndex arquivo de tamanho diferente encontrado, size no SD="+mediaSize+", size no Android="+localFileSize);
+                    destCheck.delete();
+                }
+                else{
+                    Log.d(TAG, "downloadFileByIndex arquivo já existe, size no SD="+mediaSize+", size no Android="+localFileSize);
+                    destCheck.delete();
+                    equal = true;
+                    return;
+                }
+            }
+        //} catch (Exception e) {
+        //    e.printStackTrace();
+        //}
+        if(equal == true){
+            return;
+        }
+        Log.d(TAG, "passou do segundo return");
+        //
+*/
         mediaFileList.get(index).fetchFileData(destDir, null, new DownloadListener<String>() {
             @Override
             public void onFailure(DJIError error) {
@@ -565,6 +616,32 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 currentProgress = -1;
             }
         });
+    }
+
+    private boolean checkFileExistByIndex(final int index){
+        try {
+            String fileName = mediaFileList.get(index).getFileName();
+            final String filePath = destDir + "/" + fileName;
+            Log.d(TAG, "filePath é " + filePath);
+            File destCheck = new File(filePath);
+            long mediaSize = mediaFileList.get(index).getFileSize();
+
+            if(destCheck.exists()){
+                long localFileSize = destCheck.length();
+                if(localFileSize != mediaSize){
+                    Log.d(TAG, "downloadFileByIndex arquivo de tamanho diferente encontrado, size no SD="+mediaSize+", size no Android="+localFileSize);
+                    destCheck.delete();
+                }
+                else{
+                    Log.d(TAG, "downloadFileByIndex arquivo já existe, size no SD="+mediaSize+", size no Android="+localFileSize);
+                    //destCheck.delete();
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private void deleteFileByIndex(final int index) {
