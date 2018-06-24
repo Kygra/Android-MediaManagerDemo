@@ -46,7 +46,7 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
     private TextView mTextModelAvailable;
     private TextView mVersionTv;
 
-    private Button mBtnOpen;
+    private Button mBtnOpen, mBtnGallery;
     private static final String[] REQUIRED_PERMISSION_LIST = new String[]{
         Manifest.permission.VIBRATE,
         Manifest.permission.INTERNET,
@@ -200,6 +200,9 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
         mBtnOpen.setOnClickListener(this);
         mBtnOpen.setEnabled(false);
 
+        mBtnGallery = (Button)findViewById(R.id.btn_gallery);
+        mBtnGallery.setOnClickListener(this);
+
     }
 
     protected BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -247,9 +250,9 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
         }
 
         if (TextUtils.isEmpty(version)) {
-            mTextModelAvailable.setText("Firmware version:N/A"); //Firmware version:
+            mTextModelAvailable.setText("Firmware version: N/A"); //Firmware version:
         } else {
-            mTextModelAvailable.setText("Firmware version:"+version); //"Firmware version: " +
+            mTextModelAvailable.setText("Firmware version: "+version); //"Firmware version: " +
             removeFirmwareVersionListener();
         }
     }
@@ -260,6 +263,11 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
 
             case R.id.btn_open: {
                 Intent intent = new Intent(this, DefaultLayoutActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.btn_gallery: {
+                Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 break;
             }
@@ -285,7 +293,7 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
                 mTextProduct.setText(R.string.product_information);
             }
 
-            loginAccount();
+            //loginAccount();
 
         } else {
             Log.v(TAG, "refreshSDK: False");

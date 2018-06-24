@@ -1,10 +1,12 @@
 <resources>
-    <string name="app_name">MediaManagerDemo</string>
+    <string name="app_name">Drones ao Resgate!</string>
     <string name="action_settings">Settings</string>
-    <string name="disconnected">Disconnected</string>
-    <string name="product_information">Product Information</string>
-    <string name="connection_loose">Status: No Product Connected</string>
-    <string name="model_not_available">Model Not Available</string>
+    <string name="disconnected">Desconectado</string>
+    <string name="product_information">Informação do produto</string>
+    <string name="connection_loose">Status: Drone desconectado</string>
+    <string name="model_not_available">Modelo indisponível</string>
     <string name="push_info">Push Info</string>
     <string name="sdk_version">DJI SDK Version: %1$s</string>
+    <string name="title_activity_menu">Drones ao Resgate!</string>
+    <string name="status">Status: Drone desconectado</string>
 </resources>
