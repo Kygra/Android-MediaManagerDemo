@@ -45,7 +45,7 @@
 
         <meta-data
             android:name="com.dji.sdk.API_KEY"
-            android:value="Please enter your App Key here." />
+            android:value="" />
 
         <!-- DJI SDK -->
         <activity
@@ -66,7 +66,7 @@
                 android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"
                 android:resource="@xml/accessory_filter" />
         </activity>
-        <activity android:name=".DefaultLayoutActivity"
+        <activity android:name=".CameraActivity"
             android:configChanges="orientation"
             android:screenOrientation="landscape"></activity>
         <activity

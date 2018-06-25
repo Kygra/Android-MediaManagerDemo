@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
@@ -67,7 +66,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_gallery);
         initUI();
     }
 
@@ -110,6 +109,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         }
 
+        //TODO REMOVER?
         DemoApplication.getCameraInstance().setMode(SettingsDefinitions.CameraMode.SHOOT_PHOTO, new CommonCallbacks.CompletionCallback() {
                 @Override
                 public void onResult(DJIError mError) {
@@ -118,6 +118,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                   }
                 }
         });
+        //
 
         if (mediaFileList != null) {
             mediaFileList.clear();
